@@ -1,15 +1,16 @@
 """
     fdweights(z, x, m)
 
-Calculates FD (finite difference) weights.
+Calculates FD (finite difference) weights for arbitrarily spaced nodes in 1D.
 
 Return an array of size m+1 by length(x) containing, in successive rows, the
-weights for derivatives 0, 1, ..., m.
+weights for derivatives 0, 1, ..., m. The zero (m = 0) derivative corresponds
+to interpolation.
 
 # Arguments
-- `z`: location where approximations are to be accurate
-- `x`: vector of x-coordinates (grid points)
-- `m`: highest derivative for which to find weights
+- `z`: location at which to approximate the derivative (may but need to be a grid point)
+- `x`: vector of x-coordinates (grid points; distinct, otherwise arbitrary)
+- `m`: highest derivative for which weights are sought (default value is 0)
 
 # Examples
 ```julia-repl
@@ -22,7 +23,7 @@ julia> fdweights(0, -2:2, 6)
   1.0        -4.0        6.0  -4.0        1.0
 ```
 """
-function fdweights(z, x, m)
+function fdweights(z, x, m = 0)
     n = length(x)
     if m >= n
         m = n - 1 # set to highest possible derivative
